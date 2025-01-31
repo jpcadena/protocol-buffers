@@ -53,13 +53,13 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-isort = "^5.13.2"
-black = "^24.4.2"
-ruff = "^0.5.3"
-mypy = "^1.11.0"
-pre-commit = "^3.7.1"
-protobuf = "^5.27.2"
-types-protobuf = "^5.27.0.20240626"
+isort = "^6.0.0"
+black = "^25.1.0"
+ruff = "^0.9.4"
+mypy = "^1.14.1"
+pre-commit = "^4.1.0"
+protobuf = "^5.28.2"
+types-protobuf = "^5.27.0.20240920"
 
 
 [build-system]
@@ -72,7 +72,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.isort]
 py_version = 312
 skip_glob = ["cache/*", "tests/*", ".ruff_cache/*", ".pytest_cache/*", ".mypy_cache/", "logs/*", ]
-#skip_gitignore = true
+skip_gitignore = true
 line_length = 80
 multi_line_output = 3
 use_parentheses = true

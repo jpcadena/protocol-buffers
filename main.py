@@ -7,14 +7,13 @@ It includes examples of creating, manipulating, and serializing different types
    Protocol Buffer messages to JSON and back.
 """
 
-from typing import Any
+from typing import Any, Type
 
 import google.protobuf.json_format as json_format
 from google.protobuf.message import Message
 
 import proto.complex_pb2 as complex_pb2
 import proto.enumerations_pb2 as enum_pb2
-
 import proto.maps_pb2 as maps_pb2
 import proto.oneofs_pb2 as oneofs_pb2
 import proto.simple_pb2 as simple_pb2
@@ -23,6 +22,7 @@ import proto.simple_pb2 as simple_pb2
 def simple() -> Message:
     """
     Creates and returns a Simple protocol buffer message.
+
     :return: A Simple message.
     :rtype: Message
     """
@@ -31,14 +31,15 @@ def simple() -> Message:
     )
 
 
-def complex() -> Message:
+def complex_pb() -> Message:
     """
     Creates and returns a Complex protocol buffer message with multiple Dummy
      messages.
+
     :return: A Complex message.
     :rtype: Message
     """
-    message = complex_pb2.Complex()
+    message: Message = complex_pb2.Complex()
     message.one_dummy.id = 42
     message.one_dummy.name = "My name"
     message.multiple_dummies.add(id=43, name="My name 2")
@@ -51,6 +52,7 @@ def enum() -> Message:
     """
     Creates and returns an Enumeration protocol buffer message with an eye
      color set to green.
+
     :return: An Enumeration message.
     :rtype: Message
     """
@@ -61,13 +63,13 @@ def enum() -> Message:
 
 def oneof() -> None:
     """
-    Demonstrates setting and printing a oneof field in a Result protocol buffer
-     message.
+    Demonstrates setting and printing an "oneof" field in a Result protocol
+    buffer message.
 
     :return: None
     :rtype: NoneType
     """
-    message = oneofs_pb2.Result()
+    message: Message = oneofs_pb2.Result()
     message.message = "message"
     print(message)
     message.id = 42
@@ -78,10 +80,11 @@ def maps() -> None:
     """
     Demonstrates setting and printing a map field in a MapExample protocol
      buffer message.
+
     :return: None
     :rtype: NoneType
     """
-    message = maps_pb2.MapExample()
+    message: Message = maps_pb2.MapExample()
     message.ids["myid"].id = 42
     message.ids["myid2"].id = 43
     message.ids["myid3"].id = 44
@@ -92,6 +95,7 @@ def file(message: Message) -> None:
     """
     Serializes a protocol buffer message to a file and then deserializes it
      back.
+
     :param message: The protocol buffer message to be serialized and
      deserialized.
     :type message: Message
@@ -106,14 +110,15 @@ def file(message: Message) -> None:
         f.write(bytes_as_str)
     print("Read from file")
     with open(path, "rb") as f:
-        t = type(message)
-        message = t().FromString(f.read())
+        type_: Type[Message] = type(message)
+        message = type_().FromString(f.read())
     print(message)
 
 
 def to_json(message: Message) -> str:
     """
     Converts a protocol buffer message to a JSON string.
+
     :param message: The protocol buffer message to be converted.
     :type message: Message
     :return: The JSON string representation of the message.
@@ -128,6 +133,7 @@ def to_json(message: Message) -> str:
 def from_json(json_str: str, message: Any) -> Message:
     """
     Parses a JSON string into a protocol buffer message.
+
     :param json_str: The JSON string to be parsed.
     :type json_str: str
     :param message: The protocol buffer message class.
@@ -140,14 +146,14 @@ def from_json(json_str: str, message: Any) -> Message:
 
 if __name__ == "__main__":
     # print(simple())
-    # print(complex())
+    # print(complex_pb())
     # print(enum())
     # oneof()
     # maps()
     # file(simple())
-    json_str: str = to_json(complex())
-    print(json_str)
-    print(from_json(json_str, complex_pb2.Complex))
+    json_string: str = to_json(complex_pb())
+    print(json_string)
+    print(from_json(json_string, complex_pb2.Complex))
     print(from_json('{"id": 42, "unknown": "test"}', simple_pb2.Simple))
 
 # Practice
